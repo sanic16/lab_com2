@@ -1,17 +1,12 @@
-# Python program to inverse
-# a matrix using numpy 
 
-# import required package
 import numpy as np
 
-# Taking a 3 * 3 matrix
 A = np.array(
     [[35, 53, 12],
     [12, 21, 5],
     [2, 4, 1]]
 )
 
-# Calculating the inverse of the matrix
 A = np.linalg.inv(A)
 print(A)
 A = np.mod(A, 27)
