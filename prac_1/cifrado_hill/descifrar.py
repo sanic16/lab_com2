@@ -1,4 +1,14 @@
 import numpy as np
+import argparse
+
+parser = argparse.ArgumentParser(description="Desencriptación Hill")
+parser.add_argument("--msg", help="Desencripta el mensaje",
+default="ANTRQVKVRMELIHVDLWRDGXTLTVIYDKKLFUDCWTV")
+args = parser.parse_args()
+
+# mensaje a descifrar
+msg = args.msg
+
 chars = {
     'A': 0,
     'B': 1,
@@ -29,67 +39,59 @@ chars = {
     ' ' : 26
 }
 
-# mensaje a enviar
-test_str = 'UNIVERSIDAD DE SAN CARLOS DE GUATEMALA'
 
-"""
-Se complementa con espacios si el mensaje no es divisible
-por 3
-"""
-extra = len(test_str)%3
-for x in range(3-extra):
-    test_str += ' '
 
-"""
-Se crea una lista de Strings de 3 carácteres y usando
-mapeo se obtiene el entero equivalente
-"""
-i = 0
+
+# se crea una lista de elementos tipo str de 3 caracteres
+
+i=0 
 my_list = list()
-while(i<len(test_str)):
-    my_list.append(test_str[i:(i+3)])
+while(i<len(msg)):
+    my_list.append(msg[i:(i+3)])
     i+=3
 print(my_list)
 
-# Matrices 1-D 
+# Matrices 1-D
 x = list()
 y = list()
 z = list()
 
-"""
-Se mapea de string a entero y se agregan los elementos
-a la matriz 1-D
-"""
+# mapeando carácter-entero
 for in_list in my_list:
     i = 0
     for k in in_list:
         if i==0:
-            x.append(chars[k[0]])
+            x.append(chars[k])
         elif i==1:
-            y.append(chars[k[0]])
-        else:
-            z.append(chars[k[0]])
+            y.append(chars[k])
+        elif i==2:
+            z.append(chars[k])
         i+=1
-print(x)
-print(y)
-print(z)
 
-# Matríz llave 3x3, tiene que ser inversible
+msg = np.array([x,y,z])
+
+# matríz llave
 key = [[35, 53, 12], [12, 21, 5], [2, 4, 1]]
 
-key = np.array(key)
-msg = np.array([x,y,z])
-# Multiplicando matríz mensaje por clave
-res = key@msg
-print(res)
-# Aplicando modulo len(chars)
-res = np.mod(res, len(chars))
-print(res)
+# inversa matríz llave
+key_inv = np.linalg.inv(key)
+
+# redondear al entero más cercano
+key_inv = np.rint(key_inv)
+key_inv = key_inv.astype(int)
+
+# modulo 27 de matríz llave
+key_inv_27 = key_inv%27
+
+# multiplando matríz msg x key_inv_27
+res = key_inv_27@msg
+
+# calculando módulo 27 del producto
+res = res%27
+
 k = chars.keys()
 v = chars.values()
 d_chars = dict(zip(v,k))
-print(d_chars)
-
 
 x = list()
 y = list()
@@ -106,11 +108,11 @@ for in_list in res:
             z.append(k)
     i+=1
 
-# Mensaje a enviar
 msg = ''
 i=0
 for j in range(len(x)):
     msg += d_chars[x[j]] + d_chars[y[j]] + d_chars[z[j]]
     i+=1
 print(msg)
+
 
