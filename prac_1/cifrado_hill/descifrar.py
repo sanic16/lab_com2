@@ -112,7 +112,7 @@ my_list = list()
 while(i<len(msg)):
     my_list.append(msg[i:(i+3)])
     i+=3
-print(my_list)
+#print(my_list)
 
 # Matrices 1-D
 x = list()
@@ -130,6 +130,9 @@ for in_list in my_list:
         elif i==2:
             z.append(chars[k])
         i+=1
+#print(x)
+#print(y)
+#print(z)
 
 msg = np.array([x,y,z])
 
@@ -138,23 +141,29 @@ key = [[35, 53, 12], [12, 21, 5], [2, 4, 1]]
 
 # inversa matriz llave
 key_inv = np.linalg.inv(key)
+#print(key_inv)
 
 # redondear al entero mas cercano
 key_inv = np.rint(key_inv)
 key_inv = key_inv.astype(int)
+#print(key_inv)
 
 # modulo 27 de matriz llave
 key_inv_27 = key_inv%len(chars)
+#print(key_inv_27)
 
 # multiplando matriz msg x key_inv_27
 res = key_inv_27@msg
+#print(res)
 
 # calculando modulo 27 del producto
 res = res%len(chars)
+#print(res)
 
 k = chars.keys()
 v = chars.values()
 d_chars = dict(zip(v,k))
+#print(d_chars)
 
 x = list()
 y = list()
@@ -170,6 +179,7 @@ for in_list in res:
         elif i == 2:
             z.append(k)
     i+=1
+#print(x,y,z)
 
 msg = ''
 i=0

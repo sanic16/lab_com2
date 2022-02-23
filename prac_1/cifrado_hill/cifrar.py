@@ -1,10 +1,14 @@
 import numpy as np
 import argparse
 
+
 parser = argparse.ArgumentParser(description='Cifrado Hill')
 parser.add_argument("--msg", 
 help="Encripta el mensaje", 
 default="Laboratorio de Comunicaciones 2")
+parser.add_argument("--key",
+help="Clave de encriptación",
+default="35-53-12-12-21-5-2-4-1")
 args = parser.parse_args()
 
 # mensaje a cifrar
@@ -111,17 +115,18 @@ Se complementa con espacios si el mensaje no es divisible
 por 3
 """
 pad = len(msg)%3
-for x in range(3-pad):
-    msg += ' '
-
+if len(msg)%3!=0:
+    for x in range(3-pad):
+        msg += ' '
+#print(msg)
 
 # se crea una lista de elementos tipo str de 3 caracteres
-
 i = 0
 my_list = list()
 while(i<len(msg)):
     my_list.append(msg[i:(i+3)])
     i+=3
+#print(my_list)
 
 # Matrices 1-D 
 x = list()
@@ -141,21 +146,32 @@ for in_list in my_list:
             z.append(chars[k])
         i+=1
 
-
+#print(x)
+#print(y)
+#print(z)
 
 
 key = np.array(key)
+#print(key)
+
 msg = np.array([x,y,z])
+#print(msg)
+
 # Multiplicando matriz mensaje por clave
 res = key@msg
+#print(res)
 
 # Aplicando modulo len(chars)
 res = np.mod(res, len(chars))
 k = chars.keys()
 v = chars.values()
+#print(res)
+
+# Invirtiendo el diccionario
 d_chars = dict(zip(v,k))
+#print(d_chars)
 
-
+# Dividiendo la matriz en listas
 x = list()
 y = list()
 z = list()
@@ -171,11 +187,17 @@ for in_list in res:
             z.append(k)
     i+=1
 
-# Mensaje a enviar
+#print(x)
+#print(y)
+#print(z)
+
+# mapeando de enteros a caracteres
 msg = ''
 i=0
 for j in range(len(x)):
     msg += d_chars[x[j]] + d_chars[y[j]] + d_chars[z[j]]
     i+=1
+
+# texto cifrado
 print(msg)
 
