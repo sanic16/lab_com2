@@ -1,18 +1,18 @@
-def calcRedundantBits(m):
+from os import pardir
+
+
+def num_bits_redundantes(m):
     for i in range(m):
         if(2**i >= m + i + 1):
             return i
 
-def posRedundantBits(data, r):
-    # Redundancy bits are placed at the positoins
-    # which correspond to the power of 2.
+def col_bits_redundantes(data, r):
+
     j= 0
     k = 0
     m = len(data)
     res = ''
 
-    # If position is power of 2 then insert '0'
-    # Else append data
     for i in range(1, m + r+1):
         if(i==2**j):
             res = res + '0'
@@ -22,8 +22,8 @@ def posRedundantBits(data, r):
             k += 1
     return res
 
-def calcParityBits(arr, r):
-    newlist = []
+def calc_bits_paridad(arr, r):
+    bits_paridad = []
 
     for i in [2**x for x in range(r)]:
         var = 0
@@ -33,24 +33,84 @@ def calcParityBits(arr, r):
                 if j&i:
                     var += int(arr[j-1])
 
-        newlist.append(var%2)
+        bits_paridad.append(var%2)
+    return bits_paridad
 
-    my_iter = iter(newlist)
-    new_arr = ''
+def insertar_bits_paridad(arr, bits_paridad, r):
+    my_iter = iter(bits_paridad)
+    new_arr = []
     for j in range(1, 1 + len(arr)):
         if (j not in [2**x for x in range(r)]):
-            new_arr += arr[j-1]
+            new_arr.append(int(arr[j-1]))
         else:
-            new_arr += str(next(my_iter))
-    print(new_arr)
-    print(newlist)
+            new_arr.append(next(my_iter))
     return new_arr
 
-data = '0101001'
-r = calcRedundantBits(len(data))
-arr = posRedundantBits(data, r)
-print(arr)
-res = calcParityBits(arr,r)
-calcParityBits('10001011000', r)  
+def ext_bits_paridad(arr, r):
+    newlist = []
 
     
+    for i in [2**x for x in range(r)]:
+        newlist.append(int(arr[i-1]))
+    return newlist  
+
+def comparar_paridad(paridad_cal, paridad_ext):
+    comparacion = list()
+    for i in range(0, len(paridad_cal)):
+        if paridad_cal[i] == paridad_ext[i]:
+            comparacion.append(0)
+        else:
+            comparacion.append(1)
+
+    return comparacion 
+
+def binario_a_decimal(arr):
+    val = 0
+    for i in range(0, len(arr)):
+        if arr[i] == 1:
+            
+            val += 2**i
+    
+    return val
+
+def verificar(arr, dec):
+    if dec == 0:
+        return arr
+    else:
+        arr[dec-1] += (arr[dec-1]+1)%2 
+    return arr
+
+def extraer_datos(arr, r):
+    res = ''
+    par = [2**x - 1 for x in range(r)]
+    for i in range(0,len(arr)):
+        if i not in par:
+            res += str(arr[i])
+    return res
+
+
+data = '0101101'
+r = num_bits_redundantes(len(data))
+print(r)
+arr = col_bits_redundantes(data, r)
+print(arr)
+bits_paridad = calc_bits_paridad(arr, r)
+print(bits_paridad)
+new_arr = insertar_bits_paridad(arr, bits_paridad, r)
+print(new_arr)
+
+print('\n\n')
+
+new_arr = [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1]
+paridad_cal = calc_bits_paridad(new_arr, r)
+print(paridad_cal)
+paridad_ext = ext_bits_paridad(new_arr, r)
+print(paridad_ext)
+comparacion = comparar_paridad(paridad_cal, paridad_ext)
+print(comparacion)
+bin = binario_a_decimal(comparacion)
+print(bin)
+verificacion = verificar(new_arr, bin)
+print(verificacion)
+res = extraer_datos(verificacion, r)
+print(res)
