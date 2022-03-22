@@ -1,4 +1,3 @@
-from os import pardir
 
 
 def num_bits_redundantes(m):
@@ -77,7 +76,7 @@ def verificar(arr, dec):
     if dec == 0:
         return arr
     else:
-        arr[dec-1] += (arr[dec-1]+1)%2 
+        arr[dec-1] = (0 if arr[dec-1]==1  else 1)
     return arr
 
 def extraer_datos(arr, r):
@@ -89,19 +88,24 @@ def extraer_datos(arr, r):
     return res
 
 
-data = '0101101'
+data = '0101001'
+print(data)
+# paso 1
 r = num_bits_redundantes(len(data))
 print(r)
+# paso 2
 arr = col_bits_redundantes(data, r)
 print(arr)
+# paso 3
 bits_paridad = calc_bits_paridad(arr, r)
 print(bits_paridad)
+# paso 4
 new_arr = insertar_bits_paridad(arr, bits_paridad, r)
 print(new_arr)
 
-print('\n\n')
+print('-----------------------------\n\n')
 
-new_arr = [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1]
+new_arr = [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1]
 paridad_cal = calc_bits_paridad(new_arr, r)
 print(paridad_cal)
 paridad_ext = ext_bits_paridad(new_arr, r)
