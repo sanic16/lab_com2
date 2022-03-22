@@ -1,6 +1,7 @@
 from chat.models import cifrado_hill, descifrar_hill, enviar_hamming, recibir_hamming, char_bin, bin_char, descifrar_hill
 import tkinter as tk
 from tkinter import ttk
+"""
 cifrar_hill = cifrado_hill('Universidad de San Carlos de Guatemala')
 data_bin = char_bin(cifrar_hill)
 
@@ -16,7 +17,7 @@ for i in x:
 data = bin_char(data)
 data = descifrar_hill(data)
 print(data)
-
+"""
 def cifrar():
     texto_cifrado.set(cifrado_hill(texto_ingresar.get()))
 
