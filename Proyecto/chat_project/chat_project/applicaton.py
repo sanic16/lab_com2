@@ -1,10 +1,8 @@
 import threading
 import tkinter as tk
-from tkinter import ttk
 from . import views as v
 from . import models as m
 from .constants import EncryptionTypes as ET
-import datetime
 import serial
 import time
 
@@ -17,7 +15,7 @@ class Application(tk.Tk):
         self.ser = serial.Serial()
         self.ser.baudrate = 9600
         self.ser.port = "/dev/ttyUSB0"
-        #self.ser.open()
+        self.ser.open()
         self.read = True
         self.datos = ""
 
@@ -68,12 +66,7 @@ class Application(tk.Tk):
         data = self.var.get()
         data2 = "[HP-pc] " + data + "\n"
 
-        """if self.settings['encriptacion'].get() == ET[1]:
-            data = m.cifrar(ET[1], data)
-        elif self.settings['encriptacion'].get() == ET[2]:
-            data = m.cifrar(ET[2], data)
-        elif self.settings['encriptacion'].get() == ET[0]:
-            data = m.cifrar(ET[0], data)"""
+       
         
         if self.settings['hamming'].get():
             data = m.codificar_hamming(data)
@@ -95,12 +88,7 @@ class Application(tk.Tk):
             if self.settings['hamming'].get():
                 self.datos = m.dec_hamming(self.datos)
 
-            """if self.settings['encriptacion'].get() == ET[1]:
-                self.datos = m.descifrar(ET[1], self.datos)
-            elif self.settings['encriptacion'].get() == ET[2]:
-                self.datos = m.descifrar(ET[2], self.datos)
-            elif self.settings['encriptacion'].get() == ET[0]:
-                self.datos = m.descifrar(ET[0], self.datos)"""
+            
             
 
             self.datos = "[Samsung-pc] " + self.datos + "\n"
